@@ -2,6 +2,10 @@
 pipeline {
     agent any
 
+    environment {
+        PYTHON = 'C:\\Users\\Harin\\AppData\\Local\\Programs\\Python\\Python312\\python.exe'
+    }
+
     stages {
         stage('Checkout') {
             steps {
@@ -9,16 +13,21 @@ pipeline {
             }
         }
 
+        stage('Check Python') {
+            steps {
+                bat '"%PYTHON%" --version'
+            }
+        }
+
         stage('Install Dependencies') {
             steps {
-                bat 'python --version'
-                bat 'python -m pip install -r requirements.txt'
+                bat '"%PYTHON%" -m pip install -r requirements.txt'
             }
         }
 
         stage('Run Tests') {
             steps {
-                bat 'python -m pytest -v'
+                bat '"%PYTHON%" -m pytest -v'
             }
         }
 
